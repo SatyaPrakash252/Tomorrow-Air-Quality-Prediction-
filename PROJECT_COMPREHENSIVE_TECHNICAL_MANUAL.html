@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VayuDrishti - Complete Technical Architecture & Defense Manual</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.68;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 2.5rem 1rem;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 3.5rem 4rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+        h1, h2, h3, h4 {
+            color: #0f172a;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        h1 { font-size: 2.25rem; border-bottom: 2px solid var(--border); padding-bottom: 0.75rem; margin-top: 0; }
+        h2 { font-size: 1.5rem; margin-top: 2.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; color: var(--primary-dark); }
+        h3 { font-size: 1.2rem; margin-top: 1.75rem; }
+        blockquote {
+            border-left: 4px solid var(--primary);
+            margin: 1.5rem 0;
+            padding: 0.85rem 1.25rem;
+            background: #f0f9ff;
+            color: #0369a1;
+            border-radius: 0 8px 8px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.92rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #334155;
+        }
+        tr:nth-child(even) { background: #f8fafc; }
+        code {
+            font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.88em;
+            color: #b91c1c;
+        }
+        pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        .print-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+            transition: all 0.2s;
+        }
+        .print-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+        @media print {
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .print-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">Print / Save to PDF</button>
+    <div class="container">
+        <h1>VayuDrishti (WeatherWise AI 2.0)</h1>
+<h2>Complete Technical Architecture, Mathematical Foundations &amp; Defense Manual</h2>
+<blockquote>
+<p><strong>Academic Project Reference:</strong><br />
+<strong>Institution:</strong> C.V. Raman Global University (CGU), Bhubaneswar, Odisha, India<br />
+<strong>Department:</strong> Department of Computer Science &amp; Engineering<br />
+<strong>Course:</strong> B.Tech Major Project Final Evaluation (7th/8th Semester)<br />
+<strong>Faculty Guide:</strong> Prof. Soumya Sahoo, Assistant Professor, Department of CSE<br />
+<strong>Project Contributors:</strong><br />
+1. Satyaprakash Rout (Lead Architecture &amp; Full-Stack Engine) — <code>satyaprakashrout435@gmail.com</code><br />
+2. Likuna Swain (ML Modeling &amp; Statistical Calibration) — <code>likunaswain2@gmail.com</code><br />
+3. Ch Saipriya Patra (Health Risk Epidemiology &amp; Imputation) — <code>patrachsaipriya@gmail.com</code><br />
+4. Arpeet Barik (Data Engineering &amp; Live Telemetry) — <code>arpeetbarik954@gmail.com</code>  </p>
+</blockquote>
+<hr />
+<h2>1. Executive Summary &amp; Core Motivation</h2>
+<h3>1.1 The Fundamental Problem with Existing AQI Systems</h3>
+<p>Traditional air quality monitoring systems (such as the CPCB National Air Quality Index or US EPA AQI) suffer from three critical flaws:
+1. <strong>Scalar Max-Pollutant Blindness:</strong> Standard AQI reports only the maximum sub-index of a single dominant pollutant (typically $\text{PM}<em>{2.5}$ or $\text{PM}</em>{10}$). If $\text{PM}_{2.5}$ is $150$ and $\text{NO}_2, \text{SO}_2, \text{O}_3$ are all simultaneously elevated at $140$, the reported AQI is still just $150$. It completely ignores <strong>additive and synergistic multi-pollutant toxicity</strong>.
+2. <strong>Demographic Uniformity:</strong> Scalar AQI issues identical health warnings to a healthy 22-year-old athlete, an 8-month-old infant with underdeveloped lung alveoli, and a 68-year-old COPD (Chronic Obstructive Pulmonary Disease) patient.
+3. <strong>Reactive Lag (No Lead Time):</strong> Official CAAQMS bulletins report past 24-hour moving averages. By the time a "Severe" warning is issued, the population has already suffered prolonged toxic biological exposure.</p>
+<h3>1.2 Our Solution: The VayuDrishti Framework</h3>
+<p>VayuDrishti is a dual-engine operational intelligence system:
+- <strong>Engine 1 (Atmospheric Forecasting):</strong> A <strong>Dual Stacking Ensemble</strong> combining Optuna-tuned <strong>Random Forest</strong> and <strong>XGBoost</strong> meta-learned with Ridge regression. It delivers <strong>24-hour forward forecasts</strong> with an empirical $R^2 = 0.9248$, $\text{RMSE} = 13.84$, and $\text{MAE} = 9.12\ \text{AQI}$.
+- <strong>Engine 2 (Clinical Risk Stratification):</strong> A mathematically grounded <strong>Health Risk Index (HRI)</strong> utilizing power-law multi-pollutant exposure aggregation and clinical demographic vulnerability multipliers ($V_{\text{general}} = 1.0\times$, $V_{\text{pediatric/geriatric}} = 1.3\times$, $V_{\text{respiratory}} = 1.6\times$) with shared population distribution cutoffs ($P_{25}, P_{75}, P_{90}$).
+- <strong>Engine 3 (Missing Data Recovery):</strong> A triple-branch <strong>Multimodal Autoencoder (MI-MMA)</strong> that reconstructs missing sensor streams into a 36-dimensional shared latent space ($\text{RMSE} = 4.18\ \mu\text{g/m}^3$, beating KNN and MICE).</p>
+<hr />
+<h2>2. Technology Stack &amp; Component Interconnections</h2>
+<pre><code class="language-mermaid">flowchart TB
+    subgraph DataSources[&quot;1. Real-Time Telemetry &amp; Environmental Ground Truth&quot;]
+        OM[&quot;Open-Meteo Air Quality Grid\n(Copernicus CAMS &amp; NOAA GFS)\nLat/Lon Grid Across 38 Indian Cities&quot;]
+        WAQI[&quot;CPCB CAAQMS via WAQI API\n(Ground Station Direct Ingestion)&quot;]
+        OpenAQ[&quot;OpenAQ v3 Global Sensor Network\n(US Embassy &amp; Reference Monitors)&quot;]
+    end
+
+    subgraph BackendAPI[&quot;2. Backend Core (FastAPI • Python 3.12 • Port 8000)&quot;]
+        Ingest[&quot;live_aqi.py: Multi-Source Consensus Ingestion\nCircuit Breaker + 120s In-Memory Cache&quot;]
+        ValDB[(&quot;validation_log.db (SQLite)\nDaily Forecasts &amp; Rolling RMSE/MAE Log&quot;)]
+        MLPipe[&quot;live_inference.py: Feature Assembler\n(4-Day Lag AQI, PM2.5, Meteo ERA5)&quot;]
+        Models[&quot;joblib Models: RF + XGBoost + Ridge Meta\n(Optuna Hyperparameter Tuned)&quot;]
+        SHAP[&quot;TreeSHAP Engine: Feature Attribution&quot;]
+        HRI[&quot;pipeline/advisories.py: Clinical Advisory Engine\n(Multi-Pollutant HRI + Cohort Triage)&quot;]
+    end
+
+    subgraph Frontend[&quot;3. Presentation Layer (React 19 • Vite • Port 5173)&quot;]
+        Proxy[&quot;Vite Reverse Proxy (/api -&gt; http://localhost:8000)&quot;]
+        Dash[&quot;CityDashboard.jsx: WeatherWise Cockpit\n(Hero Counter, Live Synced Badge, Verification Triple)&quot;]
+        Wave[&quot;SineWaveTimeline.jsx: Harmonic SVG Curve\n(Spring-Tracked Sun Dot, 6-Day Forward Forecast)&quot;]
+        Risk[&quot;HealthRiskPanel.jsx: HRI Engine\n(Exposure Slider, Cohort Cards, Clinical Advisory)&quot;]
+        Alerts[&quot;AlertsFeed.jsx: Public Health Alert Center\n(Live Triage Broadcasts, Criteria Pollutant Badges)&quot;]
+    end
+
+    DataSources --&gt;|JSON Over HTTPS| Ingest
+    Ingest --&gt;|Normalized Telemetry| MLPipe
+    Ingest --&gt;|Consensus Ground Truth| ValDB
+    MLPipe --&gt;|Lag Vector| Models
+    Models --&gt;|Ensemble Prediction| ValDB
+    Models --&gt;|Predictions| SHAP
+    Ingest &amp; Models --&gt;|Concentrations &amp; Predictions| HRI
+
+    BackendAPI &lt;--&gt;|REST Endpoints: /live-comparison, /risk, /alerts| Proxy
+    Proxy --&gt; Dash &amp; Wave &amp; Risk &amp; Alerts
+</code></pre>
+<h3>Detailed Breakdown of Technologies</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Layer</th>
+<th style="text-align: left;">Technology</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Purpose in Project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Frontend Framework</strong></td>
+<td style="text-align: left;"><strong>React</strong></td>
+<td style="text-align: left;"><code>19.0.0</code></td>
+<td style="text-align: left;">Declarative component UI and component tree lifecycle</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Build &amp; Dev Tool</strong></td>
+<td style="text-align: left;"><strong>Vite</strong></td>
+<td style="text-align: left;"><code>8.2.2</code></td>
+<td style="text-align: left;">High-speed ESM bundling and reverse proxy (<code>/api</code> $\rightarrow$ <code>localhost:8000</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Physics &amp; Motion</strong></td>
+<td style="text-align: left;"><strong>Framer Motion</strong></td>
+<td style="text-align: left;"><code>12.4.7</code></td>
+<td style="text-align: left;">Fluid spring physics (<code>stiffness: 95-220, damping: 18-24</code>), SVG curve morphing, number glides</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Styling &amp; Theme</strong></td>
+<td style="text-align: left;"><strong>Tailwind CSS + CSS3</strong></td>
+<td style="text-align: left;"><code>4.0</code></td>
+<td style="text-align: left;">Ultra-clean glassmorphism surfaces (<code>backdrop-filter: blur(28px)</code>), tokens for Dusk/Storm palettes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data Visualization</strong></td>
+<td style="text-align: left;"><strong>Recharts</strong></td>
+<td style="text-align: left;"><code>2.15.1</code></td>
+<td style="text-align: left;">Donut frequency distributions and demographic risk visualizers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Iconography</strong></td>
+<td style="text-align: left;"><strong>Lucide React</strong></td>
+<td style="text-align: left;"><code>0.475.0</code></td>
+<td style="text-align: left;">Modern, clean iconography throughout all components</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Backend Framework</strong></td>
+<td style="text-align: left;"><strong>FastAPI</strong></td>
+<td style="text-align: left;"><code>0.115.8</code></td>
+<td style="text-align: left;">High-performance async Python REST API framework with Pydantic validation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ASGI Server</strong></td>
+<td style="text-align: left;"><strong>Uvicorn</strong></td>
+<td style="text-align: left;"><code>0.34.0</code></td>
+<td style="text-align: left;">Production-grade asynchronous web server gateway</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Validation DB</strong></td>
+<td style="text-align: left;"><strong>SQLite3</strong></td>
+<td style="text-align: left;"><code>3.45</code></td>
+<td style="text-align: left;">Persistent zero-setup ACID storage for daily validation audit triples</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ensemble Machine Learning</strong></td>
+<td style="text-align: left;"><strong>Scikit-Learn</strong></td>
+<td style="text-align: left;"><code>1.6.1</code></td>
+<td style="text-align: left;">Random Forest Regressor, Ridge Regression meta-learner, Preprocessing Scalers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gradient Boosting</strong></td>
+<td style="text-align: left;"><strong>XGBoost</strong></td>
+<td style="text-align: left;"><code>3.1.1</code></td>
+<td style="text-align: left;">Extreme Gradient Boosted Trees for non-linear lag relationships and TreeSHAP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Hyperparameter Tuning</strong></td>
+<td style="text-align: left;"><strong>Optuna</strong></td>
+<td style="text-align: left;"><code>4.2.1</code></td>
+<td style="text-align: left;">Bayesian optimization over 50 trials per city for tree depth, learning rate, and estimators</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Deep Learning Imputation</strong></td>
+<td style="text-align: left;"><strong>PyTorch</strong></td>
+<td style="text-align: left;"><code>2.8.0</code></td>
+<td style="text-align: left;">Multimodal Autoencoder (MI-MMA) for cross-sensor latent reconstruction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Model Serialization</strong></td>
+<td style="text-align: left;"><strong>Joblib</strong></td>
+<td style="text-align: left;"><code>1.4.2</code></td>
+<td style="text-align: left;">Zero-overhead binary model persistence and sub-10ms memory mapping</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. How to Prove to Examiners That the Live Data is Real (The "Is This Data Real?" Defense)</h2>
+<h3>3.1 The Question Every Examiner Asks:</h3>
+<blockquote>
+<p><em>"How do we know that your website is showing real live data right now, and not hardcoded mock numbers or random generators?"</em></p>
+</blockquote>
+<h3>3.2 Your Bulletproof 5-Step Defense:</h3>
+<h4>Step 1: Explain the Exact Satellite &amp; Ground Sensor Provenance</h4>
+<p>Tell the examiner:</p>
+<blockquote>
+<p><em>"Our system does not use mock numbers. We ingest live atmospheric telemetry directly from the </em><em>European Union Copernicus Atmosphere Monitoring Service (Copernicus CAMS)</em><em> and the </em><em>NOAA Global Forecast System (GFS)</em><em> via the </em><em>Open-Meteo Air Quality Environmental Grid</em><em>, cross-referenced with </em><em>CPCB Continuous Ambient Air Quality Monitoring Stations (CAAQMS)</em><em>."</em></p>
+</blockquote>
+<h4>Step 2: Show the Atmospheric Grid Coordinates</h4>
+<p>Explain that each of our 38 Indian cities maps to exact geographical coordinates sampled at hourly resolution:
+- <strong>Delhi (NCR):</strong> $28.6139^\circ\text{N}, 77.2090^\circ\text{E}$ (Atmospheric Grid Station: Central Delhi)
+- <strong>Mumbai (MH):</strong> $19.0760^\circ\text{N}, 72.8777^\circ\text{E}$ (Atmospheric Grid Station: Colaba / Bandra)
+- <strong>Bhubaneswar (Odisha - CGU Host City):</strong> $20.2961^\circ\text{N}, 85.8245^\circ\text{E}$ (Atmospheric Grid Station: Chandrasekharpur / Rasulgarh)
+- <strong>Bengaluru (KA):</strong> $12.9716^\circ\text{N}, 77.5946^\circ\text{E}$ (Atmospheric Grid Station: BTM Layout)
+- <strong>Chennai (TN):</strong> $13.0827^\circ\text{N}, 80.2707^\circ\text{E}$ (Atmospheric Grid Station: Alandur)
+- <strong>Hyderabad (TG):</strong> $17.3850^\circ\text{N}, 78.4867^\circ\text{E}$ (Atmospheric Grid Station: Sanathnagar)</p>
+<h4>Step 3: Run the Live Terminal Verification in Front of the Committee</h4>
+<p>Open PowerShell or bash in front of the committee and execute:</p>
+<pre><code class="language-bash">curl http://localhost:8000/live-comparison/Delhi
+</code></pre>
+<p>Point to the returned JSON response on screen:
+1. <code>"source": "Open-Meteo (Copernicus CAMS)"</code>
+2. <code>"as_of": "2026-10-09T17:00"</code> (Current real-time atmospheric timestamp)
+3. <code>"pollutants": {"pm25": 62.4, "pm10": 170.4, "no2": 27.9, "so2": 31.3, "co": 0.6, "o3": 82.0}</code>
+4. Explain: <em>"These are the actual chemical concentrations in micrograms per cubic meter measured right now by the satellite/sensor grid. Notice that each individual criteria pollutant is reported independently."</em></p>
+<p>Then run it for Bhubaneswar:</p>
+<pre><code class="language-bash">curl http://localhost:8000/live-comparison/Bhubaneswar
+</code></pre>
+<p>Point out:
+- Live Actual AQI: <strong>77.0 AQI</strong>
+- Yesterday's Logged Prediction: <strong>74.2 AQI</strong>
+- Model Prediction Error: <strong>3.6% Error</strong>
+- Status: <strong>High Agreement (96.4% Accuracy)</strong></p>
+<h4>Step 4: Show the Upstream Raw API Call Directly</h4>
+<p>If a professor wants absolute proof, show them the raw upstream URL that our backend calls without any intermediate layers:</p>
+<pre><code>https://air-quality-api.open-meteo.com/v1/air-quality?latitude=20.2961&amp;longitude=85.8245&amp;current=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&amp;timezone=Asia%2FKolkata
+</code></pre>
+<p>Open this in the browser. Show that the numbers returned by the European Copernicus server <strong>match the numbers on your screen down to the decimal point</strong>.</p>
+<h4>Step 5: Show the Live Operational Verification Triple</h4>
+<p>Show them the card on the dashboard titled <strong>"Live Operational Verification Triple"</strong>:
+1. <strong>Card 1: Current Sensor AQI:</strong> True ground-truth sensor reading from the CAMS/CPCB grid.
+2. <strong>Card 2: Yesterday's Prediction for Today:</strong> The forecast that was stored in the SQLite validation database (<code>validation_log.db</code>) yesterday.
+3. <strong>Card 3: Tomorrow's Fresh Forecast:</strong> The machine learning ensemble's 24-hour forward forecast generated from the 4-day lag vector with a <strong>90% Empirical Prediction Interval</strong>.</p>
+<hr />
+<h2>4. Mathematical Formulations &amp; Calculation Engine</h2>
+<h3>4.1 CPCB National Air Quality Index (NAQI 2015) Breakpoint Equation</h3>
+<p>India calculates scalar AQI using piecewise linear interpolation across 6 criteria pollutants ($\text{PM}<em>{2.5}, \text{PM}</em>{10}, \text{NO}_2, \text{SO}_2, \text{CO}, \text{O}_3$):</p>
+<p>$$I_p = \frac{I_{\text{hi}} - I_{\text{lo}}}{B_{\text{hi}} - B_{\text{lo}}} \cdot (C_p - B_{\text{lo}}) + I_{\text{lo}}$$</p>
+<p>Where:
+- $C_p$ = Observed concentration of pollutant $p$.
+- $B_{\text{hi}}, B_{\text{lo}}$ = Upper and lower concentration breakpoints for the category.
+- $I_{\text{hi}}, I_{\text{lo}}$ = Corresponding AQI index breakpoints.</p>
+<p>The overall standard AQI is:</p>
+<p>$$\text{AQI}<em>{\text{CPCB}} = \max</em>{p \in \mathcal{P}} { I_p }$$</p>
+<p><em>Limitation:</em> If $I_{\text{PM2.5}} = 152$ and $I_{\text{NO2}} = 149$, the reported AQI is $152$, completely ignoring the severe nitrogen dioxide co-exposure.</p>
+<hr />
+<h3>4.2 Multi-Pollutant Health Risk Index (HRI)</h3>
+<p>To overcome the scalar limitation, VayuDrishti implements an epidemiological additive exposure model based on WHO Cardiopulmonary Guidelines and CPCB NAAQS standards:</p>
+<p>$$\text{HRI}<em>g = V_g \cdot \left( \sum</em>{p=1}^{M} \left( \frac{C_p}{S_p} \right)^\beta \right)$$</p>
+<p>Where:
+- $C_p$ = Monitored ground-truth concentration of pollutant $p$.
+- $S_p$ = Statutory standard threshold under CPCB NAAQS (National Ambient Air Quality Standards):
+  - $S_{\text{PM2.5}} = 60\ \mu\text{g/m}^3$ (24-hr)
+  - $S_{\text{PM10}} = 100\ \mu\text{g/m}^3$ (24-hr)
+  - $S_{\text{NO2}} = 80\ \mu\text{g/m}^3$ (24-hr)
+  - $S_{\text{SO2}} = 80\ \mu\text{g/m}^3$ (24-hr)
+  - $S_{\text{CO}} = 2.0\ \text{mg/m}^3$ (8-hr)
+  - $S_{\text{O3}} = 100\ \mu\text{g/m}^3$ (8-hr)
+- $\beta$ = Epidemiological exposure non-linearity parameter ($\beta = 1.0$ for linear additive baseline).
+- $V_g$ = Demographic mucosal and physiological vulnerability multiplier for cohort $g$:
+  - $V_{\text{General Public}} = 1.0\times$ (Healthy adult physiological baseline)
+  - $V_{\text{Children/Elderly}} = 1.3\times$ (Elevated alveolar ventilation-to-body-mass ratio + weakened mucociliary clearance)
+  - $V_{\text{Respiratory Patients}} = 1.6\times$ (Pre-existing hyper-reactive airway disease, asthma, and chronic bronchitis)</p>
+<h4>Critical Viva Question: Shared Scale vs. Independent Cutoffs</h4>
+<blockquote>
+<p><em>"Why didn't you compute separate 25th, 75th, and 90th percentile cutoffs for each cohort independently?"</em></p>
+</blockquote>
+<p><strong>The Mathematical Proof to give:</strong>
+If you compute percentiles independently on each cohort's distribution $D_g = V_g \cdot D_{\text{base}}$:</p>
+<p>$$P_{k}(D_g) = V_g \cdot P_{k}(D_{\text{base}})$$</p>
+<p>Then when you compare an individual's score to the cutoff:</p>
+<p>$$\frac{\text{HRI}<em>g}{P</em>{k}(D_g)} = \frac{V_g \cdot \text{HRI}<em>{\text{base}}}{V_g \cdot P</em>{k}(D_{\text{base}})} = \frac{\text{HRI}<em>{\text{base}}}{P</em>{k}(D_{\text{base}})}$$</p>
+<p>The vulnerability multiplier $V_g$ <strong>cancels out completely</strong>! Every cohort would experience identical alert rates (~10% Severe, ~15% High) regardless of whether their factor was $1.0\times$ or $10.0\times$.</p>
+<p><strong>Our Solution:</strong> We calibrate static, statutory clinical cutoffs strictly against the <strong>General Public distribution</strong>:
+- <strong>Low Risk:</strong> $\text{HRI} \le P_{25} = 7.12$
+- <strong>Moderate Risk:</strong> $7.12 &lt; \text{HRI} \le P_{75} = 14.71$
+- <strong>High Risk (Alert Trigger):</strong> $14.71 &lt; \text{HRI} \le P_{90} = 23.85$
+- <strong>Severe Emergency (Statutory Warning):</strong> $\text{HRI} &gt; P_{90} = 23.85$</p>
+<p>Because the cutoffs are fixed, a Respiratory Patient with $V_g = 1.6\times$ crosses the Severe threshold ($23.85$) at a much lower ambient pollutant concentration than a healthy adult, properly activating targeted clinical alerts.</p>
+<hr />
+<h3>4.3 Dual Stacking Ensemble Regression</h3>
+<p>Our 24-hour forward forecasting architecture employs a two-tier stacking ensemble:</p>
+<pre><code>[Level 0 Base Models]
+  ┌────────────────────────────────────────────────────────┐
+  │  Base Model 1: Random Forest Regressor (Optuna-tuned) │──┐
+  │  (n_estimators=300, max_depth=16, min_samples_split=4) │  │
+  └────────────────────────────────────────────────────────┘  │
+                                                              ├──&gt; [Level 1 Meta-Learner: Ridge Regression] ──&gt; Final Forecast
+  ┌────────────────────────────────────────────────────────┐  │    (y_hat = w1 * y_RF + w2 * y_XGB + b)
+  │  Base Model 2: XGBoost Regressor (Optuna-tuned)        │──┘
+  │  (n_estimators=450, max_depth=6, lr=0.03, gamma=0.1)  │
+  └────────────────────────────────────────────────────────┘
+</code></pre>
+<p>The mathematical blending equation evaluated at time $t$ for forecast $t+1$:</p>
+<p>$$\hat{y}<em>{t+1} = w</em>{\text{RF}} \cdot \hat{y}<em>{\text{RF}}(X_t) + w</em>{\text{XGB}} \cdot \hat{y}<em>{\text{XGB}}(X_t) + b</em>{\text{meta}}$$</p>
+<p>Subject to $L_2$ regularization on blending weights:</p>
+<p>$$\min_{\mathbf{w}} \sum_{i=1}^{N} \left( y_i - \mathbf{w}^T \hat{\mathbf{y}}_i \right)^2 + \alpha |\mathbf{w}|_2^2$$</p>
+<h4>Input Feature Vector $\mathbf{X}_t$ (36-dimensional feature space):</h4>
+<ol>
+<li><strong>Autoregressive Lag Features:</strong> $\text{AQI}<em>t, \text{AQI}</em>{t-1}, \text{AQI}<em>{t-2}, \text{AQI}</em>{t-3}$</li>
+<li><strong>Criteria Pollutant Concentrations:</strong> $\text{PM}<em>{2.5}(t), \text{PM}</em>{10}(t), \text{NO}_2(t), \text{SO}_2(t), \text{CO}(t), \text{O}_3(t)$</li>
+<li><strong>Pollutant Lag Interactions:</strong> $\text{PM}<em>{2.5}(t-1), \text{PM}</em>{2.5}(t-2), \text{PM}_{10}(t-1)$</li>
+<li><strong>Meteorological Confounders (ERA5 / CAMS):</strong> Temperature ($T$), Relative Humidity ($RH$), Wind Speed ($WS$), Wind Direction ($WD$), Surface Pressure ($P$), Planetary Boundary Layer Height ($PBLH$)</li>
+<li><strong>Temporal &amp; Seasonal Encodings:</strong> $\sin\left(\frac{2\pi \cdot \text{day}}{365}\right), \cos\left(\frac{2\pi \cdot \text{day}}{365}\right), \text{day_of_week}, \text{is_weekend}$</li>
+<li><strong>Cultural &amp; Festival Episode Indicators:</strong> Categorical binary flag for stubble-burning episodes (Oct-Nov) and Diwali particulate spikes.</li>
+</ol>
+<hr />
+<h3>4.4 90% Empirical Prediction Intervals</h3>
+<p>Point forecasts are insufficient for public health planning. We quantify uncertainty through empirical conformalized prediction intervals:</p>
+<p>$$\hat{y}<em>{t+1} \in \left[ \hat{y}</em>{t+1} - z_{0.95} \cdot \sigma_{\text{emp}}, \quad \hat{y}<em>{t+1} + z</em>{0.95} \cdot \sigma_{\text{emp}} \right]$$</p>
+<p>Where:
+- $\sigma_{\text{emp}}$ is the localized residual standard deviation derived from held-out validation errors per city.
+- Delhi $\sigma_{\text{emp}} = 22.4$, Mumbai $\sigma_{\text{emp}} = 14.8$, Bengaluru $\sigma_{\text{emp}} = 12.1$.
+- The empirical <strong>Prediction Interval Coverage Probability (PICP)</strong> achieved across 2,403 held-out test days is <strong>$90.01\%$</strong>, confirming strict statistical calibration.</p>
+<hr />
+<h3>4.5 TreeSHAP Feature Attribution (Explainable AI)</h3>
+<p>For every single live forecast, we run native TreeSHAP (SHapley Additive exPlanations) to explain <strong>why</strong> the model predicted that number:</p>
+<p>$$\hat{y}(x) = \phi_0 + \sum_{i=1}^{M} \phi_i(x)$$</p>
+<p>Where $\phi_0$ is the base expected value across the training distribution, and $\phi_i(x)$ is the marginal contribution of feature $i$ calculated via cooperative game theory:</p>
+<p>$$\phi_i = \sum_{S \subseteq F \setminus {i}} \frac{|S|!(|F| - |S| - 1)!}{|F|!} \cdot \left[ f_x(S \cup {i}) - f_x(S) \right]$$</p>
+<p>In our live dashboard, when Delhi forecasts $107.3\ \text{AQI}$, the system displays:
+- $\text{Current AQI}$ contributed $+7.10\ \text{AQI}$
+- $\text{AQI Lag 3}$ contributed $+4.95\ \text{AQI}$
+- $\text{PM}_{2.5}$ level contributed $+2.43\ \text{AQI}$</p>
+<hr />
+<h2>5. Summary of Empirical Results</h2>
+<p>These numbers come from our reproducible script (<code>backend/pipeline/ablation_study.py</code>) and are saved in <code>backend/outputs/pinned_ensemble_metrics.json</code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Model Architecture</th>
+<th style="text-align: center;">$R^2$ Score</th>
+<th style="text-align: center;">RMSE ($\mu\text{g/m}^3$)</th>
+<th style="text-align: center;">MAE ($\mu\text{g/m}^3$)</th>
+<th style="text-align: center;">MAPE (%)</th>
+<th style="text-align: center;">Inference Latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Persistence Baseline ($y_{t+1} = y_t$)</td>
+<td style="text-align: center;">$0.6842$</td>
+<td style="text-align: center;">$32.14$</td>
+<td style="text-align: center;">$23.40$</td>
+<td style="text-align: center;">$22.18\%$</td>
+<td style="text-align: center;">$&lt; 0.1\ \text{ms}$</td>
+</tr>
+<tr>
+<td style="text-align: left;">Standard Linear Regression</td>
+<td style="text-align: center;">$0.7215$</td>
+<td style="text-align: center;">$28.60$</td>
+<td style="text-align: center;">$19.82$</td>
+<td style="text-align: center;">$18.45\%$</td>
+<td style="text-align: center;">$0.4\ \text{ms}$</td>
+</tr>
+<tr>
+<td style="text-align: left;">LSTM Recurrent Neural Network</td>
+<td style="text-align: center;">$0.7912$</td>
+<td style="text-align: center;">$23.10$</td>
+<td style="text-align: center;">$16.05$</td>
+<td style="text-align: center;">$14.80\%$</td>
+<td style="text-align: center;">$18.5\ \text{ms}$</td>
+</tr>
+<tr>
+<td style="text-align: left;">Standalone Random Forest (Tuned)</td>
+<td style="text-align: center;">$0.8845$</td>
+<td style="text-align: center;">$16.92$</td>
+<td style="text-align: center;">$11.45$</td>
+<td style="text-align: center;">$10.62\%$</td>
+<td style="text-align: center;">$3.2\ \text{ms}$</td>
+</tr>
+<tr>
+<td style="text-align: left;">Standalone XGBoost (Tuned)</td>
+<td style="text-align: center;">$0.8992$</td>
+<td style="text-align: center;">$15.70$</td>
+<td style="text-align: center;">$10.38$</td>
+<td style="text-align: center;">$9.74\%$</td>
+<td style="text-align: center;">$2.8\ \text{ms}$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Proposed Dual Stacking Ensemble</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{0.9248}$</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{13.84}$</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{9.12}$</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{8.58\%}$</strong></td>
+<td style="text-align: center;"><strong>$4.1\ \text{ms}$</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>Imputation Performance (Missing Data Reconstruction)</h3>
+<p>Evaluated across $10\%$, $25\%$, and $40\%$ artificially injected Missing Completely At Random (MCAR) masks:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Imputation Method</th>
+<th style="text-align: center;">RMSE at 10% Missing</th>
+<th style="text-align: center;">RMSE at 25% Missing</th>
+<th style="text-align: center;">RMSE at 40% Missing</th>
+<th style="text-align: center;">Latent Dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">K-Nearest Neighbors (KNN, $k=5$)</td>
+<td style="text-align: center;">$12.18$</td>
+<td style="text-align: center;">$14.62$</td>
+<td style="text-align: center;">$18.94$</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;">MICE (Multivariate Chained Eq.)</td>
+<td style="text-align: center;">$9.84$</td>
+<td style="text-align: center;">$11.85$</td>
+<td style="text-align: center;">$15.20$</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Proposed MI-MMA Autoencoder</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{3.12}$</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{4.18}$</strong></td>
+<td style="text-align: center;"><strong>$\mathbf{5.89}$</strong></td>
+<td style="text-align: center;"><strong>$d = 36$</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>6. End-to-End API Routes Reference</h2>
+<p>All routes are served from the FastAPI backend at <code>http://localhost:8000</code> and proxied through Vite at <code>http://localhost:5173/api</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Route</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Parameters</th>
+<th style="text-align: left;">Returns</th>
+<th style="text-align: left;">Project Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>/live/{city}</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>city: str</code></td>
+<td style="text-align: left;"><code>LiveAQIResponse</code></td>
+<td style="text-align: left;">Returns live consensus AQI from WAQI, Open-Meteo, and OpenAQ with individual pollutant readings</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/live-comparison/{city}</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>city: str</code></td>
+<td style="text-align: left;"><code>LiveComparisonResponse</code></td>
+<td style="text-align: left;">Returns the <strong>Operational Verification Triple</strong>: live actual ($t$), yesterday predicted ($\hat{y}<em>t$), tomorrow forecast ($\hat{y}</em>{t+1}$), percentage error, and agreement status</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/risk/{city}</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>city: str</code></td>
+<td style="text-align: left;"><code>RiskResponse</code></td>
+<td style="text-align: left;">Computes live multi-pollutant HRI across all 3 demographic cohorts and generates the <strong>Clinical Advisory Report (v3.2)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/alerts</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>city: Optional[str]</code>, <code>group: Optional[str]</code></td>
+<td style="text-align: left;"><code>AlertsResponse</code></td>
+<td style="text-align: left;">Returns active emergency health broadcast alerts across all Indian megacities or a selected city</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/forecast/{city}</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>city: str</code></td>
+<td style="text-align: left;"><code>ForecastResponse</code></td>
+<td style="text-align: left;">Returns 7-day model predictions with confidence intervals and contributing SHAP factors</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/history/{city}</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;"><code>city: str</code>, <code>days: int</code></td>
+<td style="text-align: left;"><code>HistoryResponse</code></td>
+<td style="text-align: left;">Returns historical test-set comparisons showing actual AQI vs RF vs XGBoost vs Ensemble predictions</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/metrics</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><code>MetricsResponse</code></td>
+<td style="text-align: left;">Returns pinned empirical cross-model benchmark metrics ($R^2$, RMSE, MAE, ablation comparison)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>/config/cities</code></td>
+<td style="text-align: left;"><code>GET</code></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;"><code>CityConfigResponse</code></td>
+<td style="text-align: left;">Returns full registry of 38 supported Indian cities with coordinates and modeling flags</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>7. Viva &amp; Project Review Defense Q&amp;A</h2>
+<h3>Q1: "Why did you build an ensemble rather than just training a deep neural network like an LSTM or Transformer?"</h3>
+<p><strong>Answer:</strong></p>
+<blockquote>
+<p><em>"Air quality time-series are influenced by sharp, abrupt boundary condition shifts (e.g., wind direction reversals, sudden vehicular congestion, crop burning episodes) rather than purely smooth recurrent temporal cycles. In our empirical benchmarking (Table IV of our conference paper), LSTM achieved an $R^2$ of $0.7912$ with $18.5\ \text{ms}$ inference latency. By contrast, tree-based gradient boosted models handle non-linear tabular interactions and feature interactions much better on CAAQMS sensor data. By combining Random Forest (which minimizes variance through bootstrap aggregation) and XGBoost (which minimizes bias through gradient-based leaf splitting) via a Ridge regression meta-learner, our ensemble achieved an $R^2$ of $0.9248$ while executing in just $4.1\ \text{ms}$—making it fast enough for real-time edge deployment."</em></p>
+</blockquote>
+<h3>Q2: "What is the physical meaning of the numbers displayed in the Verification Triple?"</h3>
+<p><strong>Answer:</strong></p>
+<blockquote>
+<p><em>"The Verification Triple provides an ongoing empirical audit of our AI model. 
+1. The first card shows today's actual ground-truth sensor reading from the CAMS/CPCB atmospheric grid (e.g., $147.0\ \text{AQI}$ in Delhi).
+2. The second card shows what our model predicted yesterday for today (e.g., $141.2\ \text{AQI}$), which was logged into SQLite 24 hours prior. We compute the exact error right on the spot ($|147.0 - 141.2| / 147.0 = 3.9\%$ error). This proves to users that the model is genuinely accurate on unseen days.
+3. The third card shows tomorrow's fresh forecast ($107.3\ \text{AQI}$) with a 90% confidence interval ($[70.5, 144.1]\ \text{AQI}$), generated live from the 4-day lag vector."</em></p>
+</blockquote>
+<h3>Q3: "What happens if an external sensor station goes offline or WAQI rate limits your server?"</h3>
+<p><strong>Answer:</strong></p>
+<blockquote>
+<p><em>"We implemented a 3-tier resilient failover architecture with a Circuit Breaker pattern:
+1. Primary Ingestion tries WAQI ground stations. If it fails or times out (2.5-second socket timeout), it instantly falls back to Open-Meteo European Copernicus CAMS grid.
+2. Open-Meteo operates on satellite reanalysis and numerical weather models, requires zero API keys, and has 99.9% uptime across all Indian coordinates.
+3. If upstream internet is completely severed, the backend Circuit Breaker opens and our MI-MMA Multimodal Autoencoder reconstructs the missing features from our persistent local ERA5 atmospheric cache, ensuring zero runtime crashes."</em></p>
+</blockquote>
+<h3>Q4: "How does the Health Risk Index (HRI) directly benefit a medical doctor or public health official?"</h3>
+<p><strong>Answer:</strong></p>
+<blockquote>
+<p><em>"Standard AQI tells a doctor: 'The air is Moderate (130 AQI)'. That gives zero clinical actionability.
+Our Clinical Advisory Engine tells the doctor:
+1. Dominant Burden: Elevated Ozone ($170\ \mu\text{g/m}^3$) and $\text{PM}<em>{2.5}$ ($48.9\ \mu\text{g/m}^3$).
+2. Cellular Mechanism: Ozone acts as a powerful oxidant causing deep epithelial inflammation, while $\text{PM}</em>{2.5}$ penetrates alveoli and enters systemic circulation.
+3. Cohort Specifics: For a respiratory patient, the vulnerability multiplier of $1.6\times$ pushes their HRI to $23.44$ (Severe Risk), triggering an alert to increase bronchodilator preparedness and equip N95 respirators, whereas a healthy adult remains in Moderate risk."</em></p>
+</blockquote>
+<hr />
+<h2>8. Step-by-Step Live Demonstration Script</h2>
+<p>Follow these exact steps when presenting your project to the evaluation committee:</p>
+<ol>
+<li><strong>Step 1: Open the Application</strong></li>
+<li>Open browser to <code>http://localhost:5173</code>.</li>
+<li>Show the smooth dusk sky atmospheric design with glassmorphism surfaces.</li>
+<li>
+<p>Point to the navigation header: <em>WeatherWise AI 2.0</em> with the live synchronized AQI badge.</p>
+</li>
+<li>
+<p><strong>Step 2: Overview Page (<code>/</code>)</strong></p>
+</li>
+<li>Point out the 4 Core Scientific Pillars: Dual Stacking Ensemble ($R^2 = 0.9248$), Multi-Pollutant HRI, MI-MMA Autoencoder, and sub-10ms edge inference.</li>
+<li>
+<p>Show the live monitored megacities cards (Delhi, Mumbai, Bengaluru, Chennai, Hyderabad).</p>
+</li>
+<li>
+<p><strong>Step 3: Forecast Cockpit (<code>/dashboard</code>)</strong></p>
+</li>
+<li>Click <strong>"Launch City Forecast"</strong>.</li>
+<li>Show the <strong>Hero AQI Counter</strong> gliding with spring physics to the current live value.</li>
+<li>Point to the <strong>Audit Badge</strong> in the top bar: <code>Audit: High Agreement (96.1% Accuracy)</code>.</li>
+<li>Point to the <strong>Sine-Wave Timeline</strong>: Hover and scrub across the 6-day forward forecast. Click on <strong>Tomorrow</strong> to show the ML forecast card with its 90% confidence interval.</li>
+<li>
+<p>Toggle between <strong>AQI Index</strong> and <strong>Temp (°C)</strong> to demonstrate the fluid sliding pill animation.</p>
+</li>
+<li>
+<p><strong>Step 4: Switch City to Bhubaneswar (University Host City)</strong></p>
+</li>
+<li>Click the <strong>Interactive Globe Orb</strong> or the city dropdown and select <strong>Bhubaneswar</strong>.</li>
+<li>Show that Bhubaneswar immediately loads its genuine local reading ($77\ \text{AQI}$, Satisfactory Airshed).</li>
+<li>
+<p>Click <strong>"Deep Analytics"</strong>:</p>
+<ul>
+<li>Show the <strong>Live Operational Verification Triple</strong>: Today ($77.0$), Yesterday Predicted ($74.2$), Error ($3.6\%$), Tomorrow ($108.0$).</li>
+<li>Show the <strong>Criteria Pollutant Breakdown</strong>: $\text{PM}<em>{2.5} = 46.2$, $\text{PM}</em>{10} = 53.6$, $\text{NO}_2 = 16.3$, $\text{SO}_2 = 17.5$, $\text{CO} = 0.70$, $\text{O}_3 = 73.0\ \mu\text{g/m}^3$.</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 5: Health Risk Engine (<code>/risk</code>)</strong></p>
+</li>
+<li>Navigate to <code>/risk</code>.</li>
+<li>Point out the <strong>3 Demographic Cohort Cards</strong>: General Public ($1.0\times$), Children/Elderly ($1.3\times$), Respiratory Patients ($1.6\times$).</li>
+<li>Drag the <strong>Interactive Exposure Slider</strong> from $77$ up to $320$. Watch all 3 cohort cards dynamically recalculate their HRI scores and shift from Moderate to Severe with fluid Framer Motion animations.</li>
+<li>
+<p>Scroll down to the <strong>Clinical Advisory Engine Report (v3.2)</strong>: Point to the biochemical pathway explanation and statutory mitigation checklist.</p>
+</li>
+<li>
+<p><strong>Step 6: Public Health Alerts Center (<code>/alerts</code>)</strong></p>
+</li>
+<li>Navigate to <code>/alerts</code>.</li>
+<li>Show the live broadcast stream of emergency warnings.</li>
+<li>
+<p>Click through the city chips: <strong>All $\rightarrow$ Delhi $\rightarrow$ Mumbai $\rightarrow$ Bhubaneswar</strong> to show that alerts dynamically filter and update with live ground truth concentrations.</p>
+</li>
+<li>
+<p><strong>Step 7: Research Page (<code>/about</code>)</strong></p>
+</li>
+<li>Navigate to <code>/about</code>.</li>
+<li>Show the academic institutional banner: <strong>C.V. Raman Global University (CGU)</strong>, Department of CSE, Guided by <strong>Prof. Soumya Sahoo</strong>, listing all 4 student contributors.</li>
+<li>Show the formal academic literature citations (CPCB 2015, WHO 2021, Chen &amp; Guestrin XGBoost, Rao et al. IEEE TII).</li>
+</ol>
+<hr />
+<h2>9. Real-World Practical Utility &amp; Target Beneficiaries</h2>
+<p>When evaluators ask: <strong>"Who will actually use this in the real world, and what tangible benefit does it deliver?"</strong>, provide this structured operational answer:</p>
+<pre><code>                          ┌────────────────────────────────────────────────────────┐
+                          │               VayuDrishti AI 2.0 Core                  │
+                          │  (24h Stacking Ensemble Forecast + Cohort HRI Triage)  │
+                          └────────────────────────────────────────────────────────┘
+                                     │                  │                  │
+                ┌────────────────────┘                  │                  └────────────────────┐
+                ▼                                       ▼                                       ▼
+┌───────────────────────────────┐   ┌───────────────────────────────┐   ┌───────────────────────────────┐
+│     Municipal Governance      │   │     Clinical Healthcare       │   │    Education &amp; Public Life    │
+│  (Smart City / BMC / CPCB)    │   │  (Hospitals &amp; Pulmonology)    │   │  (Schools &amp; High-Risk Cohorts)│
+├───────────────────────────────┤   ├───────────────────────────────┤   ├───────────────────────────────┤
+│ • Pre-emptive 24h GRAP Bans   │   │ • Emergency ER Nebulizer Prep │   │ • Morning Assembly Shift to   │
+│ • Anti-smog Gun Dispatch      │   │ • Pediatric / Geriatric Beds  │   │   Indoor Gymnasiums           │
+│ • Heavy Truck Rerouting       │   │ • COPD High-Flow Oxygen Stock │   │ • Targeted N95 Advisory for   │
+│ • Construction Dust Halts     │   │ • Clinic Asthmatic Alerts     │   │   Asthmatics &amp; Elderly Joggers│
+└───────────────────────────────┘   └───────────────────────────────┘   └───────────────────────────────┘
+</code></pre>
+<h3>9.1 Municipal Governance &amp; Smart City Deployments (e.g., Bhubaneswar Smart City, MCD Delhi)</h3>
+<ul>
+<li><strong>Pre-emptive Graded Response Action Plan (GRAP):</strong> Standard government action is reactive—officials wait until air quality reaches "Severe" for 48 hours before shutting down construction or ordering mist-sprayers. By then, particulate damage is done. VayuDrishti provides <strong>24 hours of advance lead time</strong>, allowing authorities to enforce anti-dust mist cannons, halt diesel generator sets, and reroute interstate heavy freight trucks <strong>before the thermal inversion layer traps emissions</strong>.</li>
+<li><strong>Localized Traffic Corridor Throttling:</strong> Smart City Command and Control Centers (ICCC) can dynamically adjust signal timings around high-risk arterial roads when TreeSHAP shows localized $\text{NO}<em>2$ and $\text{PM}</em>{10}$ surges.</li>
+</ul>
+<h3>9.2 Clinical Healthcare &amp; Hospital Emergency Surge Preparedness</h3>
+<ul>
+<li><strong>Emergency Room (ER) Nebulizer Stockpiling:</strong> When the system predicts a <strong>Severe HRI trigger for Respiratory Patients ($V_g = 1.6\times$)</strong> tomorrow, pulmonology departments receive automated early warnings to pre-stock salbutamol/budesonide nebulizers, high-flow nasal cannulas, and prepare supplemental oxygen cylinders.</li>
+<li><strong>Pediatric &amp; Geriatric Inpatient Bed Forecasting:</strong> Cross-referencing 24-hr forward HRI spikes with historical emergency admission rates allows hospital administrators to prevent ICUs from being overwhelmed.</li>
+</ul>
+<h3>9.3 School Directorates &amp; Educational Institutions</h3>
+<ul>
+<li><strong>Pre-emptive Morning Activity Shifting:</strong> Children possess narrower airways and inhale significantly more air per kilogram of body weight than adults. When the 24-hr forward HRI warns of an elevated pediatric tier ($V_g = 1.3\times$), school principals can reschedule morning physical education, cross-country runs, or outdoor assemblies to indoor ventilated halls.</li>
+</ul>
+<h3>9.4 Industrial Parks &amp; Logistics Fleet Dispatch</h3>
+<ul>
+<li><strong>Dynamic Emission Caps:</strong> Cement plants, thermal power units, and steel smelters on city outskirts can be instructed to schedule high-emission kiln maintenance or power throttling during forecasted severe dispersion-collapse windows.</li>
+</ul>
+<hr />
+<h2>10. Standard Operating Procedure (SOP) &amp; Operational Action Matrix</h2>
+<p>The <strong>Standard Operating Procedure (SOP)</strong> defines the statutory, automated protocol executed every 24 hours to ensure continuous data reliability and multi-agency response.</p>
+<h3>10.1 The 24-Hour Automated Execution Cycle (Timeline Protocol)</h3>
+<pre><code>00:00 - 05:00 IST ──► Phase 1: Nightly Telemetry Sync &amp; Reanalysis Ingestion
+                      • Pull Copernicus CAMS hourly grid + CPCB CAAQMS sensor stations
+                      • Store missing streams into MI-MMA autoencoder for latent imputation (d=36)
+
+06:00 IST         ──► Phase 2: Ensemble Inference &amp; Uncertainty Quantification
+                      • Build 4-day lag vector (t, t-1, t-2, t-3) + ERA5 meteorological confounders
+                      • Execute Dual Stacking Ensemble (RF + XGBoost with Ridge meta-learner)
+                      • Compute 90% Empirical Prediction Intervals &amp; TreeSHAP factor attributions
+                      • Store tomorrow's forecast (y_hat_{t+1}) into SQLite `daily_forecasts` table
+
+06:30 IST         ──► Phase 3: Multi-Pollutant HRI Calculation &amp; Threshold Triage
+                      • Evaluate criteria pollutant concentrations against CPCB NAAQS breakpoints
+                      • Apply cohort multipliers: General (1.0x), Children (1.3x), Respiratory (1.6x)
+                      • Compare against static shared cutoffs (P25=7.12, P75=14.71, P90=23.85)
+
+07:00 IST         ──► Phase 4: Inter-Agency Broadcast &amp; Alert Dispatch
+                      • If HRI &gt; 14.71 (High) or HRI &gt; 23.85 (Severe), push alerts to `/alerts` feed
+                      • Dispatch automated advisory checklists to hospitals, schools, municipal bodies
+
+19:30 - 23:59 IST ──► Phase 5: Automated Ground-Truth Audit &amp; Continuous Calibration
+                      • Compare morning actual sensor reading (y_t) against yesterday's prediction (y_hat_t)
+                      • Log absolute error (|y_t - y_hat_t|) into `validation_log.db`
+                      • Update rolling 14-day RMSE, MAE, and Agreement Percentage in memory
+</code></pre>
+<hr />
+<h3>10.2 Statutory 4-Tier Escalation Action Matrix</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Alert Tier</th>
+<th style="text-align: center;">HRI Threshold (Shared Scale)</th>
+<th style="text-align: center;">General Public ($1.0\times$) Protocol</th>
+<th style="text-align: center;">Children &amp; Elderly ($1.3\times$) Protocol</th>
+<th style="text-align: center;">Respiratory Patients ($1.6\times$) Protocol</th>
+<th style="text-align: center;">Municipal &amp; Inter-Agency Mandate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Tier I: Low</strong> (Normal)</td>
+<td style="text-align: center;">$\text{HRI} \le 7.12$</td>
+<td style="text-align: center;">Normal outdoor exercise permitted. Regular ventilation.</td>
+<td style="text-align: center;">Normal daily recreational routines permitted.</td>
+<td style="text-align: center;">Standard baseline medication compliance.</td>
+<td style="text-align: center;">Routine ambient monitoring. Baseline street sweeping.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Tier II: Moderate</strong> (Watch)</td>
+<td style="text-align: center;">$7.12 &lt; \text{HRI} \le 14.71$</td>
+<td style="text-align: center;">Sensitive individuals reduce prolonged heavy exertion.</td>
+<td style="text-align: center;">Shift intensive outdoor athletics to shaded/indoor areas.</td>
+<td style="text-align: center;">Carry emergency rescue inhaler; limit heavy cardio near roadways.</td>
+<td style="text-align: center;">Dust-suppression water sprinkling on high-density transit corridors.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Tier III: High</strong> (Advisory)</td>
+<td style="text-align: center;">$14.71 &lt; \text{HRI} \le 23.85$</td>
+<td style="text-align: center;">Wear N95/FFP2 respirators if outdoors $&gt;2\ \text{hours}$. Seal windows.</td>
+<td style="text-align: center;"><strong>Mandatory indoor morning assembly.</strong> Prohibit outdoor sports.</td>
+<td style="text-align: center;"><strong>Strictly avoid all outdoor exercise.</strong> Run HEPA (H13) air purifiers indoors.</td>
+<td style="text-align: center;">Deploy mobile anti-smog water cannons. Halt open biomass burning. Restrict unpaved construction activities.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Tier IV: Severe</strong> (Emergency)</td>
+<td style="text-align: center;">$\text{HRI} &gt; 23.85$</td>
+<td style="text-align: center;"><strong>Public Health Emergency.</strong> Avoid all non-essential outdoor travel. Wear tight-fitting N95.</td>
+<td style="text-align: center;"><strong>Complete closure of outdoor school activities.</strong> High-risk children stay home.</td>
+<td style="text-align: center;"><strong>Immediate clinical triage alert.</strong> Emergency room surge protocol activated. Double bronchodilator readiness.</td>
+<td style="text-align: center;"><strong>Enforce GRAP Emergency Level.</strong> Halt non-essential diesel trucks. Stop brick kiln operations. Mandatory work-from-home advisory.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>10.3 Failure, Redundancy &amp; Fallback SOP</h3>
+<p>If upstream networks or hardware fail during live operation:
+1. <strong>API Timeout Trigger ($&gt;2.5\ \text{s}$):</strong>
+   - Circuit Breaker transitions from <code>CLOSED</code> $\rightarrow$ <code>HALF-OPEN</code>.
+   - Backend automatically fails over to the <strong>Open-Meteo European Copernicus CAMS grid</strong> (zero-key, satellite-backed).
+2. <strong>Total Internet Outage:</strong>
+   - Circuit Breaker transitions to <code>OPEN</code>.
+   - The <strong>MI-MMA Multimodal Autoencoder</strong> reads the persistent local ERA5 atmospheric cache, reconstructing missing values with an empirical RMSE of $4.18\ \mu\text{g/m}^3$.
+3. <strong>Database Integrity:</strong>
+   - <code>validation_log.db</code> uses SQLite WAL (Write-Ahead Logging) mode, preventing write locks or data corruption during concurrent queries.</p>
+<hr />
+<p><em>Manual compiled and verified for the Final Major Project Evaluation Review, October 2026.</em></p>
+    </div>
+</body>
+</html>

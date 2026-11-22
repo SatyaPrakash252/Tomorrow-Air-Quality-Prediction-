@@ -1,0 +1,132 @@
+{
+  "ablation_matrix": [
+    {
+      "model": "Simple Linear Baseline: Ridge Regression",
+      "RMSE": 17.06,
+      "MAE": 11.64,
+      "R\u00b2": 0.8964,
+      "MAPE(%)": 13.31,
+      "Accuracy(1-MAPE,%)": 86.69
+    },
+    {
+      "model": "Baseline: Kashyap et al. (Standard RF on lags)",
+      "RMSE": 17.53,
+      "MAE": 11.63,
+      "R\u00b2": 0.8906,
+      "MAPE(%)": 13.42,
+      "Accuracy(1-MAPE,%)": 86.58
+    },
+    {
+      "model": "Ablation: Standalone XGBoost (lags only, no weather/MMA)",
+      "RMSE": 17.35,
+      "MAE": 11.6,
+      "R\u00b2": 0.8927,
+      "MAPE(%)": 13.35,
+      "Accuracy(1-MAPE,%)": 86.65
+    },
+    {
+      "model": "Baseline: Rao et al. (Multimodal Imputation + MMA + XGBoost)",
+      "RMSE": 17.19,
+      "MAE": 11.59,
+      "R\u00b2": 0.8948,
+      "MAPE(%)": 13.39,
+      "Accuracy(1-MAPE,%)": 86.61
+    },
+    {
+      "model": "Ablation: RF + Meteorological Features (+ERA5)",
+      "RMSE": 17.01,
+      "MAE": 11.44,
+      "R\u00b2": 0.8969,
+      "MAPE(%)": 13.47,
+      "Accuracy(1-MAPE,%)": 86.53
+    },
+    {
+      "model": "Ablation: RF + Weather + Event Awareness (+Diwali/Stubble)",
+      "RMSE": 16.95,
+      "MAE": 11.42,
+      "R\u00b2": 0.8976,
+      "MAPE(%)": 13.42,
+      "Accuracy(1-MAPE,%)": 86.58
+    },
+    {
+      "model": "Proposed: Stacking Ensemble (RF + XGBoost)",
+      "RMSE": 16.67,
+      "MAE": 11.14,
+      "R\u00b2": 0.901,
+      "MAPE(%)": 13.04,
+      "Accuracy(1-MAPE,%)": 86.96
+    },
+    {
+      "model": "Ablation: Standalone LSTM (7-day sequence)",
+      "RMSE": 21.68,
+      "MAE": 15.43,
+      "R\u00b2": 0.8312,
+      "MAPE(%)": 17.7,
+      "Accuracy(1-MAPE,%)": 82.3
+    },
+    {
+      "model": "Ablation: Tri-Ensemble (RF + XGBoost + LSTM [Equal Avg])",
+      "RMSE": 18.63,
+      "MAE": 13.04,
+      "R\u00b2": 0.8772,
+      "MAPE(%)": 14.98,
+      "Accuracy(1-MAPE,%)": 85.02
+    },
+    {
+      "model": "Ensemble Comparison: RF + XGBoost (Aligned Test Samples)",
+      "RMSE": 16.7,
+      "MAE": 11.16,
+      "R\u00b2": 0.9013,
+      "MAPE(%)": 13.0,
+      "Accuracy(1-MAPE,%)": 87.0
+    }
+  ],
+  "significance_testing": {
+    "test_samples": 2368,
+    "wilcoxon_stat": 1305423.0,
+    "wilcoxon_pvalue": 0.0035472846311785816,
+    "wilcoxon_significant_p01": true,
+    "t_stat": -2.754,
+    "t_pvalue": 0.005936914283570218,
+    "t_test_significant_p05": true,
+    "t_test_significant_p01": true,
+    "statistically_significant_p05": true,
+    "significance_summary": "Paired t-test is statistically significant at p < 0.05 (p = 0.0059); non-parametric Wilcoxon test is statistically significant at p < 0.01 (p = 3.5473e-03)."
+  },
+  "multi_horizon": [
+    {
+      "model": "Day+1 Horizon",
+      "RMSE": 16.69,
+      "MAE": 11.13,
+      "R\u00b2": 0.9008,
+      "MAPE(%)": 13.03,
+      "Accuracy(1-MAPE,%)": 86.97,
+      "horizon_days": 1
+    },
+    {
+      "model": "Day+2 Horizon",
+      "RMSE": 20.08,
+      "MAE": 13.77,
+      "R\u00b2": 0.8561,
+      "MAPE(%)": 16.67,
+      "Accuracy(1-MAPE,%)": 83.33,
+      "horizon_days": 2
+    },
+    {
+      "model": "Day+3 Horizon",
+      "RMSE": 21.32,
+      "MAE": 13.95,
+      "R\u00b2": 0.8376,
+      "MAPE(%)": 17.42,
+      "Accuracy(1-MAPE,%)": 82.58,
+      "horizon_days": 3
+    }
+  ],
+  "pinned_ensemble": {
+    "R2_score": 0.901,
+    "RMSE": 16.67,
+    "MAE": 11.14,
+    "MAPE_pct": 13.04,
+    "accuracy_1_minus_mape_pct": 86.96
+  }
+}

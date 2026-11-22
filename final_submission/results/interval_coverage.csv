@@ -1,0 +1,7 @@
+City,Test_Samples,City_RMSE,Interval_Margin_PlusMinus,Samples_Inside,Empirical_Coverage_Pct,Nominal_Coverage_Pct
+Delhi,437,21.64,35.6,383,87.64,90.0
+Mumbai,437,18.11,29.79,387,88.56,90.0
+Chennai,509,18.3,30.1,469,92.14,90.0
+Hyderabad,510,11.09,18.25,465,91.18,90.0
+Bangalore,510,12.86,21.16,459,90.0,90.0
+Overall (All 5 Metros),2403,16.64,27.37,2163,90.01,90.0

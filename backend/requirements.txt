@@ -1,0 +1,16 @@
+# Pinned Dependencies for Academic Reproducibility
+# Python 3.12.5 (Windows AMD64)
+
+scikit-learn==1.6.1
+xgboost==3.1.1
+scipy==1.15.2
+pandas==2.3.3
+numpy==2.0.2
+optuna==4.9.0
+joblib==1.4.2
+fastapi==0.115.11
+uvicorn==0.34.0
+pydantic==2.11.9
+requests==2.32.3
+pytest>=8.0.0
+httpx>=0.27.0

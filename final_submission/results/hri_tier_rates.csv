@@ -1,0 +1,4 @@
+Vulnerability_Group,Multiplier_Vg,LOW_Pct,MODERATE_Pct,HIGH_Pct,SEVERE_Pct,HIGH_Plus_SEVERE_Pct
+General Public,1.0,25.63,49.44,14.9,10.03,24.93
+Children & Elderly,1.3,7.49,52.6,23.47,16.44,39.91
+Respiratory Patients,1.6,1.83,42.45,32.92,22.8,55.72

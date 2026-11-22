@@ -1,0 +1,378 @@
+"""
+city_config.py
+──────────────
+Central registry for all supported Indian cities across all states and regions.
+
+- has_historical_model=True  → Offline ML Ensemble (RF + XGBoost + LSTM) trained on 5-yr CPCB data
+- has_historical_model=False → Live CPCB/WAQI/OpenAQ sensors + Real-time Copernicus/GFS forecast
+"""
+
+CITY_REGISTRY = [
+    # ── Core Metros with Trained Historical ML Models (CPCB 2015-2020) ──
+    {
+        "city": "Delhi",
+        "state": "Delhi",
+        "region": "North",
+        "has_historical_model": True,
+        "waqi_name": "delhi",
+        "lat": 28.6139,
+        "lon": 77.2090,
+    },
+    {
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "region": "West",
+        "has_historical_model": True,
+        "waqi_name": "mumbai",
+        "lat": 19.0760,
+        "lon": 72.8777,
+    },
+    {
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "region": "South",
+        "has_historical_model": True,
+        "waqi_name": "bangalore",
+        "lat": 12.9716,
+        "lon": 77.5946,
+    },
+    {
+        "city": "Chennai",
+        "state": "Tamil Nadu",
+        "region": "South",
+        "has_historical_model": True,
+        "waqi_name": "chennai",
+        "lat": 13.0827,
+        "lon": 80.2707,
+    },
+    {
+        "city": "Hyderabad",
+        "state": "Telangana",
+        "region": "South",
+        "has_historical_model": True,
+        "waqi_name": "hyderabad",
+        "lat": 17.3850,
+        "lon": 78.4867,
+    },
+
+    # ── Odisha (CGU Project Region) ──
+    {
+        "city": "Bhubaneswar",
+        "state": "Odisha",
+        "region": "East",
+        "has_historical_model": False,
+        "waqi_name": "bhubaneswar",
+        "lat": 20.2961,
+        "lon": 85.8245,
+    },
+    {
+        "city": "Cuttack",
+        "state": "Odisha",
+        "region": "East",
+        "has_historical_model": False,
+        "waqi_name": "cuttack",
+        "lat": 20.4625,
+        "lon": 85.8828,
+    },
+
+    # ── East & Central India ──
+    {
+        "city": "Kolkata",
+        "state": "West Bengal",
+        "region": "East",
+        "has_historical_model": False,
+        "waqi_name": "kolkata",
+        "lat": 22.5726,
+        "lon": 88.3639,
+    },
+    {
+        "city": "Patna",
+        "state": "Bihar",
+        "region": "East",
+        "has_historical_model": False,
+        "waqi_name": "patna",
+        "lat": 25.5941,
+        "lon": 85.1376,
+    },
+    {
+        "city": "Ranchi",
+        "state": "Jharkhand",
+        "region": "East",
+        "has_historical_model": False,
+        "waqi_name": "ranchi",
+        "lat": 23.3441,
+        "lon": 85.3096,
+    },
+    {
+        "city": "Bhopal",
+        "state": "Madhya Pradesh",
+        "region": "Central",
+        "has_historical_model": False,
+        "waqi_name": "bhopal",
+        "lat": 23.2599,
+        "lon": 77.4126,
+    },
+    {
+        "city": "Indore",
+        "state": "Madhya Pradesh",
+        "region": "Central",
+        "has_historical_model": False,
+        "waqi_name": "indore",
+        "lat": 22.7196,
+        "lon": 75.8577,
+    },
+    {
+        "city": "Raipur",
+        "state": "Chhattisgarh",
+        "region": "Central",
+        "has_historical_model": False,
+        "waqi_name": "raipur",
+        "lat": 21.2514,
+        "lon": 81.6296,
+    },
+
+    # ── North India ──
+    {
+        "city": "Jaipur",
+        "state": "Rajasthan",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "jaipur",
+        "lat": 26.9124,
+        "lon": 75.7873,
+    },
+    {
+        "city": "Lucknow",
+        "state": "Uttar Pradesh",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "lucknow",
+        "lat": 26.8467,
+        "lon": 80.9462,
+    },
+    {
+        "city": "Kanpur",
+        "state": "Uttar Pradesh",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "kanpur",
+        "lat": 26.4499,
+        "lon": 80.3319,
+    },
+    {
+        "city": "Varanasi",
+        "state": "Uttar Pradesh",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "varanasi",
+        "lat": 25.3176,
+        "lon": 82.9739,
+    },
+    {
+        "city": "Agra",
+        "state": "Uttar Pradesh",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "agra",
+        "lat": 27.1767,
+        "lon": 78.0081,
+    },
+    {
+        "city": "Chandigarh",
+        "state": "Chandigarh",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "chandigarh",
+        "lat": 30.7333,
+        "lon": 76.7794,
+    },
+    {
+        "city": "Amritsar",
+        "state": "Punjab",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "amritsar",
+        "lat": 31.6340,
+        "lon": 74.8723,
+    },
+    {
+        "city": "Ludhiana",
+        "state": "Punjab",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "ludhiana",
+        "lat": 30.9010,
+        "lon": 75.8573,
+    },
+    {
+        "city": "Dehradun",
+        "state": "Uttarakhand",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "dehradun",
+        "lat": 30.3165,
+        "lon": 78.0322,
+    },
+    {
+        "city": "Shimla",
+        "state": "Himachal Pradesh",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "shimla",
+        "lat": 31.1048,
+        "lon": 77.1734,
+    },
+    {
+        "city": "Srinagar",
+        "state": "Jammu and Kashmir",
+        "region": "North",
+        "has_historical_model": False,
+        "waqi_name": "srinagar",
+        "lat": 34.0837,
+        "lon": 74.7973,
+    },
+
+    # ── West India ──
+    {
+        "city": "Pune",
+        "state": "Maharashtra",
+        "region": "West",
+        "has_historical_model": False,
+        "waqi_name": "pune",
+        "lat": 18.5204,
+        "lon": 73.8567,
+    },
+    {
+        "city": "Ahmedabad",
+        "state": "Gujarat",
+        "region": "West",
+        "has_historical_model": False,
+        "waqi_name": "ahmedabad",
+        "lat": 23.0225,
+        "lon": 72.5714,
+    },
+    {
+        "city": "Surat",
+        "state": "Gujarat",
+        "region": "West",
+        "has_historical_model": False,
+        "waqi_name": "surat",
+        "lat": 21.1702,
+        "lon": 72.8311,
+    },
+    {
+        "city": "Nagpur",
+        "state": "Maharashtra",
+        "region": "West",
+        "has_historical_model": False,
+        "waqi_name": "nagpur",
+        "lat": 21.1458,
+        "lon": 79.0882,
+    },
+    {
+        "city": "Nashik",
+        "state": "Maharashtra",
+        "region": "West",
+        "has_historical_model": False,
+        "waqi_name": "nashik",
+        "lat": 19.9975,
+        "lon": 73.7898,
+    },
+    {
+        "city": "Vadodara",
+        "state": "Gujarat",
+        "region": "West",
+        "has_historical_model": False,
+        "waqi_name": "vadodara",
+        "lat": 22.3072,
+        "lon": 73.1812,
+    },
+
+    # ── South India ──
+    {
+        "city": "Kochi",
+        "state": "Kerala",
+        "region": "South",
+        "has_historical_model": False,
+        "waqi_name": "kochi",
+        "lat": 9.9312,
+        "lon": 76.2673,
+    },
+    {
+        "city": "Thiruvananthapuram",
+        "state": "Kerala",
+        "region": "South",
+        "has_historical_model": False,
+        "waqi_name": "thiruvananthapuram",
+        "lat": 8.5241,
+        "lon": 76.9366,
+    },
+    {
+        "city": "Visakhapatnam",
+        "state": "Andhra Pradesh",
+        "region": "South",
+        "has_historical_model": False,
+        "waqi_name": "visakhapatnam",
+        "lat": 17.6868,
+        "lon": 83.2185,
+    },
+    {
+        "city": "Coimbatore",
+        "state": "Tamil Nadu",
+        "region": "South",
+        "has_historical_model": False,
+        "waqi_name": "coimbatore",
+        "lat": 11.0168,
+        "lon": 76.9558,
+    },
+    {
+        "city": "Madurai",
+        "state": "Tamil Nadu",
+        "region": "South",
+        "has_historical_model": False,
+        "waqi_name": "madurai",
+        "lat": 9.9252,
+        "lon": 78.1198,
+    },
+    {
+        "city": "Mysuru",
+        "state": "Karnataka",
+        "region": "South",
+        "has_historical_model": False,
+        "waqi_name": "mysuru",
+        "lat": 12.2958,
+        "lon": 76.6394,
+    },
+
+    # ── North-East India ──
+    {
+        "city": "Guwahati",
+        "state": "Assam",
+        "region": "North-East",
+        "has_historical_model": False,
+        "waqi_name": "guwahati",
+        "lat": 26.1445,
+        "lon": 91.7362,
+    },
+    {
+        "city": "Shillong",
+        "state": "Meghalaya",
+        "region": "North-East",
+        "has_historical_model": False,
+        "waqi_name": "shillong",
+        "lat": 25.5788,
+        "lon": 91.8933,
+    },
+]
+
+# ── Derived lookups ──────────────────────────────────────────────────
+HISTORICAL_CITIES = [c["city"] for c in CITY_REGISTRY if c["has_historical_model"]]
+LIVE_ONLY_CITIES = [c["city"] for c in CITY_REGISTRY if not c["has_historical_model"]]
+ALL_CITIES = [c["city"] for c in CITY_REGISTRY]
+
+def get_city_config(city_name: str) -> dict | None:
+    """Case-insensitive lookup of a city's config entry."""
+    for c in CITY_REGISTRY:
+        if c["city"].lower() == city_name.lower():
+            return c
+    return None

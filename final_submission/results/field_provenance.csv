@@ -1,0 +1,8 @@
+Dashboard_Field,ML_Tier_City_Source,ML_Tier_Data_Type,AI_Tier_City_Source,AI_Tier_Data_Type
+Live Actual AQI,CPCB CAAQMS ground monitoring stations via WAQI & OpenAQ API,Live Ground Sensor Data,Copernicus CAMS & Open-Meteo numerical simulation,Numerical Atmospheric Model Output
+Yesterday Pred (Verification),Retrieved from SQLite daily_forecasts table logged during yesterday's inference,Trained ML Ensemble Output (Stored),Retrieved from yesterday's CAMS/GFS 24h atmospheric simulation run,Atmospheric Simulation Output (Stored)
+Tomorrow Forecast (Day+1),Dual Stacking Ensemble (RF + XGBoost) executed on live 4-day lag & ERA5 features,Trained ML Ensemble Model Output,Copernicus CAMS & NOAA GFS 24h atmospheric chemistry forecast,Numerical Atmospheric Model Output
+Prediction Interval (90%),Empirical error margin (+- 1.645 * RMSE_city) from held-out test residuals,Statistical Residual Uncertainty,Atmospheric ensemble dispersion spread from ECMWF/GFS physics,Physical Atmospheric Uncertainty
+Explainability (SHAP Factors),Native XGBoost C++ TreeSHAP calculating exact Shapley values on 81 features,Trained Model Explainability (XAI),Constituent particulate ratios from CAMS aerosol chemistry,Chemical Constituent Attribution
+Health Risk Index (HRI),Multi-pollutant cumulative ratio (sum Ci/Si * Vg) from CPCB live sensors,Deterministic Clinical Formulation,Multi-pollutant cumulative ratio (sum Ci/Si * Vg) from CAMS concentrations,Deterministic Clinical Formulation
+Public Health Alerts,Threshold engine matching HRI against General Public baseline percentiles (P75/P90),Deterministic Threshold Engine,Threshold engine matching atmospheric HRI against same baseline percentiles,Deterministic Threshold Engine

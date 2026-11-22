@@ -1,0 +1,123 @@
+{
+  "study": "Leave-One-City-Out (LOCO) Cross-City Generalization",
+  "description": "Zero-shot transfer of trained ensemble models to unseen geographic regions",
+  "features_used": [
+    "AQI",
+    "PM2.5",
+    "PM10",
+    "NO2",
+    "SO2",
+    "CO",
+    "O3",
+    "AQI_lag1",
+    "AQI_lag2",
+    "AQI_lag3",
+    "PM2.5_lag1",
+    "PM2.5_lag2",
+    "PM2.5_lag3",
+    "PM10_lag1",
+    "PM10_lag2",
+    "PM10_lag3",
+    "NO2_lag1",
+    "NO2_lag2",
+    "NO2_lag3",
+    "SO2_lag1",
+    "SO2_lag2",
+    "SO2_lag3",
+    "CO_lag1",
+    "CO_lag2",
+    "CO_lag3",
+    "O3_lag1",
+    "O3_lag2",
+    "O3_lag3",
+    "temp",
+    "humidity",
+    "wind_speed",
+    "wind_dir",
+    "pressure",
+    "temp_lag1",
+    "temp_lag2",
+    "humidity_lag1",
+    "humidity_lag2",
+    "wind_speed_lag1",
+    "wind_speed_lag2",
+    "pressure_lag1",
+    "pressure_lag2",
+    "day_of_week",
+    "month",
+    "is_diwali_window",
+    "is_stubble_season"
+  ],
+  "results": [
+    {
+      "city": "Delhi",
+      "RMSE": 33.42,
+      "MAE": 27.42,
+      "R\u00b2": 0.6541,
+      "train_cities": [
+        "Mumbai",
+        "Chennai",
+        "Hyderabad",
+        "Bangalore"
+      ],
+      "test_rows": 2185
+    },
+    {
+      "city": "Mumbai",
+      "RMSE": 23.95,
+      "MAE": 16.73,
+      "R\u00b2": 0.8057,
+      "train_cities": [
+        "Delhi",
+        "Chennai",
+        "Hyderabad",
+        "Bangalore"
+      ],
+      "test_rows": 2182
+    },
+    {
+      "city": "Chennai",
+      "RMSE": 22.4,
+      "MAE": 15.3,
+      "R\u00b2": 0.4742,
+      "train_cities": [
+        "Delhi",
+        "Mumbai",
+        "Hyderabad",
+        "Bangalore"
+      ],
+      "test_rows": 2538
+    },
+    {
+      "city": "Hyderabad",
+      "RMSE": 15.14,
+      "MAE": 11.3,
+      "R\u00b2": 0.8016,
+      "train_cities": [
+        "Delhi",
+        "Mumbai",
+        "Chennai",
+        "Bangalore"
+      ],
+      "test_rows": 2550
+    },
+    {
+      "city": "Bangalore",
+      "RMSE": 15.66,
+      "MAE": 11.53,
+      "R\u00b2": 0.6312,
+      "train_cities": [
+        "Delhi",
+        "Mumbai",
+        "Chennai",
+        "Hyderabad"
+      ],
+      "test_rows": 2550
+    }
+  ],
+  "average_metrics": {
+    "RMSE": 22.11,
+    "MAE": 16.46,
+    "R\u00b2": 0.6734
+  }
+}

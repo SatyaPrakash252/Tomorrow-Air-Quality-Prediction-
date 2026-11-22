@@ -1,0 +1,316 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Instrument Sans', sans-serif;
+    --font-sans: 'Geist', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Dusk Theme Tokens ────────────────────────────────────────── */
+  :root, [data-theme="dusk"] {
+    --outer-canvas-bg: #1a1e24;
+    --sky-img: url('/backgrounds/sky-dusk.jpg');
+    --sky-fallback: radial-gradient(ellipse at 85% 90%, rgba(245, 158, 11, 0.45) 0%, rgba(180, 83, 9, 0.25) 30%, transparent 65%), linear-gradient(135deg, #1e293b 0%, #334155 40%, #475569 70%, #1e2024 100%);
+    --headline-color: #ffffff;
+    --headline-muted: #fef08a;
+    --body-color: #f8fafc;
+    --subtext-color: rgba(255, 255, 255, 0.90);
+    --glass-panel-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.65) 0%, rgba(30, 41, 59, 0.50) 100%);
+    --glass-panel-border: rgba(255, 255, 255, 0.25);
+    --glass-card-bg: linear-gradient(135deg, rgba(15, 23, 42, 0.55) 0%, rgba(30, 41, 59, 0.45) 100%);
+    --glass-card-border: rgba(255, 255, 255, 0.20);
+    --glass-pill-bg: rgba(255, 255, 255, 0.20);
+    --glass-pill-border: rgba(255, 255, 255, 0.35);
+    --hero-num-color: #ffffff;
+    --hero-num-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 0 50px rgba(245, 158, 11, 0.25);
+    --chip-h-bg: rgba(255, 255, 255, 0.18);
+    --accent-glow: rgba(245, 158, 11, 0.7);
+  }
+
+  /* ── Storm Theme Tokens ───────────────────────────────────────── */
+  [data-theme="storm"] {
+    --outer-canvas-bg: #0b0e14;
+    --sky-img: url('/backgrounds/sky-storm.jpg');
+    --sky-fallback: radial-gradient(ellipse at 50% 85%, rgba(245, 158, 11, 0.40) 0%, rgba(180, 83, 9, 0.2) 30%, transparent 60%), linear-gradient(145deg, #0b1120 0%, #1e293b 45%, #334155 75%, #181c24 100%);
+    --headline-color: #ffffff;
+    --headline-muted: #e2e8f0;
+    --body-color: #f1f5f9;
+    --subtext-color: rgba(241, 245, 249, 0.90);
+    --glass-panel-bg: linear-gradient(135deg, rgba(11, 17, 32, 0.75) 0%, rgba(15, 23, 42, 0.65) 100%);
+    --glass-panel-border: rgba(255, 255, 255, 0.18);
+    --glass-card-bg: linear-gradient(135deg, rgba(11, 17, 32, 0.65) 0%, rgba(15, 23, 42, 0.55) 100%);
+    --glass-card-border: rgba(255, 255, 255, 0.15);
+    --glass-pill-bg: rgba(255, 255, 255, 0.12);
+    --glass-pill-border: rgba(255, 255, 255, 0.22);
+    --hero-num-color: #ffffff;
+    --hero-num-shadow: 0 4px 30px rgba(0, 0, 0, 0.8), 0 0 50px rgba(251, 191, 36, 0.2);
+    --chip-h-bg: rgba(255, 255, 255, 0.12);
+    --accent-glow: rgba(251, 191, 36, 0.6);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--outer-canvas-bg);
+    color: var(--body-color);
+    overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+  }
+}
+
+/* ── Master WeatherWise Rounded Viewport Container (32px radius) ──── */
+.weatherwise-container {
+  border-radius: 32px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  background-color: #1e293b;
+  background-image: var(--sky-fallback);
+  background-size: cover;
+  background-position: center;
+  transition: box-shadow 0.4s ease;
+}
+
+/* Photographic Sky Background with Fallback */
+.weatherwise-sky-bg {
+  position: absolute;
+  inset: 0;
+  background-image: var(--sky-img), var(--sky-fallback);
+  background-size: cover;
+  background-position: center bottom;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Subtle Film Grain Noise (2.5% opacity) */
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ── Frosted Glass Surfaces ────────────────────────────────────── */
+.glass-sidebar {
+  background: var(--glass-panel-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--glass-panel-border);
+  border-radius: 28px;
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel {
+  background: var(--glass-panel-bg);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--glass-panel-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card {
+  background: var(--glass-card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-card-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35), 0 0 25px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+
+.glass-pill {
+  background: var(--glass-pill-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-pill-border);
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-pill:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.50);
+  transform: translateY(-1px);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(20px)) {
+  .glass-sidebar {
+    background: rgba(20, 27, 45, 0.88);
+  }
+  .glass-panel {
+    background: rgba(20, 27, 45, 0.88);
+  }
+  .glass-card {
+    background: rgba(20, 27, 45, 0.82);
+  }
+  .glass-pill {
+    background: rgba(20, 27, 45, 0.85);
+  }
+}
+
+/* ── Typography Utility Classes ────────────────────────────────── */
+.headline-editorial {
+  color: var(--headline-color);
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.headline-muted {
+  color: var(--headline-muted);
+}
+
+.hero-number-display {
+  font-family: var(--font-display);
+  font-weight: 200;
+  letter-spacing: -0.04em;
+  color: var(--hero-num-color);
+  text-shadow: var(--hero-num-shadow);
+  line-height: 0.9;
+}
+
+.subtext-editorial {
+  color: var(--subtext-color);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Glowing Sun-Like Timeline Dot ─────────────────────────────── */
+.glowing-timeline-dot {
+  box-shadow: 0 0 14px 3px rgba(255, 255, 255, 0.9), 0 0 30px 8px var(--accent-glow);
+}
+
+/* ── Smooth Ambient Drift ──────────────────────────────────────── */
+@keyframes cloudDrift {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.03) translate(-1%, -0.8%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 0 20px 6px rgba(245, 158, 11, 0.5); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ambient-drift {
+    animation: cloudDrift 45s ease-in-out infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+}
+
+/* ── Fluid Transitions & Hardware Acceleration ────────────────── */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, a, .interactive {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+.fluid-spring {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ambient-glow-amber {
+  box-shadow: 0 0 25px -4px rgba(245, 158, 11, 0.35);
+}
+
+.ambient-glow-emerald {
+  box-shadow: 0 0 25px -4px rgba(52, 211, 153, 0.35);
+}
+
+/* ── Range Slider Styling ──────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.6);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+  cursor: pointer;
+}
+
+/* Custom Minimal Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+}

@@ -1,0 +1,4 @@
+model,RMSE,MAE,R²,MAPE(%),"Accuracy(1-MAPE,%)",Horizon_Days,Horizon_Hours
+Day+1 Forecast Horizon,16.66,11.1,0.9012,12.97,87.03,1,24
+Day+2 Forecast Horizon,19.92,13.7,0.8584,16.54,83.46,2,48
+Day+3 Forecast Horizon,21.12,13.89,0.8406,17.36,82.64,3,72

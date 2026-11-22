@@ -1,0 +1,5 @@
+Branch,Input_Dim,Bottleneck_Dim,Reconstruction_MSE
+KNN_AE,7,12,4e-06
+MICE_AE,7,12,1e-05
+SVD_AE,7,12,1.6e-05
+Fused MI-MMA,21,36,1e-05

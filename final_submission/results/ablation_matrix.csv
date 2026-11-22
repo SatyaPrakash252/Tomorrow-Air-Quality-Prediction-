@@ -1,0 +1,11 @@
+model,RMSE,MAE,R²,MAPE(%),"Accuracy(1-MAPE,%)"
+Simple Linear Baseline: Ridge Regression,17.06,11.64,0.8964,13.31,86.69
+Baseline: Kashyap et al. (Standard RF on lags),17.54,11.63,0.8904,13.41,86.59
+"Ablation: Standalone XGBoost (lags only, no weather/MMA)",17.33,11.6,0.8931,13.37,86.63
+Baseline: Rao et al. (Multimodal Imputation + MMA + XGBoost),17.08,11.53,0.8961,13.35,86.65
+Ablation: RF + Meteorological Features (+ERA5),17.04,11.47,0.8966,13.5,86.5
+Ablation: RF + Weather + Event Awareness (+Diwali/Stubble),16.97,11.41,0.8974,13.43,86.57
+Proposed: Stacking Ensemble (RF + XGBoost),16.64,11.12,0.9014,12.98,87.02
+Ablation: Standalone LSTM (7-day sequence),21.68,15.52,0.8312,17.77,82.23
+Ablation: Tri-Ensemble (RF + XGBoost + LSTM [Equal Avg]),18.55,13.03,0.8782,14.94,85.06
+Ensemble Comparison: RF + XGBoost (Aligned Test Samples),16.68,11.14,0.9016,12.95,87.05

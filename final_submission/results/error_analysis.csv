@@ -1,0 +1,14 @@
+Segment_Type,Segment_Value,Count,RMSE,MAE,R²,Mean_True_AQI
+City,Delhi,437,21.64,13.68,0.8403,178.3
+City,Mumbai,437,18.11,13.22,0.8501,100.3
+City,Chennai,509,18.3,12.36,0.4921,72.2
+City,Hyderabad,510,11.09,7.92,0.722,79.0
+City,Bangalore,510,12.86,9.09,0.7229,73.6
+Season,Winter (Dec-Feb),593,18.86,12.92,0.8784,121.4
+Season,Summer (Mar-May),460,17.17,11.54,0.8733,102.4
+Season,Monsoon (Jun-Sep),776,12.78,8.55,0.8155,65.8
+Season,Post-Monsoon (Oct-Nov),574,18.29,12.38,0.9013,115.3
+Event,Diwali Window (±2 days),50,35.17,26.13,0.5534,149.7
+Event,Non-Diwali Normal Days,2353,16.02,10.8,0.9068,97.3
+Event,Stubble Burning Season (Oct 15 - Nov 25),412,19.13,12.61,0.8942,124.8
+Event,Non-Stubble Season,1991,16.08,10.81,0.8966,92.9

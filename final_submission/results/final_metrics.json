@@ -1,0 +1,90 @@
+{
+  "metadata": {
+    "project_title": "AI-Driven Air Quality Forecasting and Public Health Risk Alert System for Indian Metropolitan Cities",
+    "platform_name": "VayuDrishti",
+    "academic_milestone": "7th Sem Major Project Final Evaluation (Stage-1)",
+    "evaluation_date": "2026-10-10",
+    "generation_timestamp": "2026-09-28T12:50:25.118067",
+    "python_version": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "random_seed": 42
+  },
+  "dataset_summary": {
+    "total_rows": 12042,
+    "date_range": "2018-01-01 to 2024-12-31 (7 Continuous Years)",
+    "cities_evaluated": [
+      "Delhi",
+      "Mumbai",
+      "Chennai",
+      "Hyderabad",
+      "Bangalore"
+    ],
+    "overall_missing_pct": 0.0
+  },
+  "imputation": {
+    "benchmark_type": "Seeded artificial masking (7% of criteria pollutant records)",
+    "overall_rmse": {
+      "KNN": 0.6975,
+      "MICE": 0.0061,
+      "SVD": 40.1903
+    },
+    "best_performing_method": "MICE (IterativeImputer)"
+  },
+  "autoencoder": {
+    "architecture": "Symmetric Dense Bottleneck (7 -> 32 -> 12 -> 32 -> 7)",
+    "reconstruction_mse": {
+      "KNN_AE": 4e-06,
+      "MICE_AE": 1e-05,
+      "SVD_AE": 1.6e-05,
+      "Fused_36D_Mean": 1e-05
+    }
+  },
+  "proposed_model_evaluation": {
+    "model": "Dual Stacking Ensemble (Random Forest + XGBoost with Meteorology & Events)",
+    "features_dimension": 81,
+    "train_samples": 9609,
+    "test_samples": 2403,
+    "test_split": "80/20 Chronological Time-Series Split per City (Zero Future Leakage)",
+    "RMSE": 13.84,
+    "MAE": 9.12,
+    "R2": 0.9248,
+    "MAPE_pct": 8.58,
+    "Accuracy_pct": 91.42
+  },
+  "statistical_significance": {
+    "paired_t_test": {
+      "t_stat": -3.722,
+      "p_value": 0.00020241307622321578,
+      "significant_at_p05": true,
+      "significant_at_p01": true
+    },
+    "wilcoxon_signed_rank": {
+      "W_stat": 1263583.0,
+      "p_value": 3.0029849002144663e-05,
+      "significant_at_p01": true
+    }
+  },
+  "prediction_interval": {
+    "nominal_level_pct": 90.0,
+    "overall_empirical_coverage_pct": 90.01,
+    "formula": "y_hat +- 1.645 * RMSE_city"
+  },
+  "hri_engine": {
+    "baseline_cutoffs": {
+      "p25": 7.1209999999999996,
+      "p75": 14.123816666666666,
+      "p90": 23.59484666666669
+    },
+    "alert_rates_high_plus_severe": {
+      "General Public": 24.93,
+      "Children & Elderly": 39.91,
+      "Respiratory Patients": 55.72
+    }
+  },
+  "loco_summary": {
+    "mean_rmse": 20.77,
+    "mean_mae": 15.3,
+    "mean_r2": 0.7054,
+    "worst_city": "Chennai",
+    "worst_city_r2": 0.5155
+  }
+}

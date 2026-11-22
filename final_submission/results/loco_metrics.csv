@@ -1,0 +1,7 @@
+Held_Out_City,Training_Cities,Test_Samples,RMSE,MAE,R²,MAPE(%),Accuracy(%)
+Delhi,"Mumbai, Chennai, Hyderabad, Bangalore",2185,30.14,24.15,0.7186,15.56,84.44
+Mumbai,"Delhi, Chennai, Hyderabad, Bangalore",2182,22.27,15.57,0.832,14.7,85.3
+Chennai,"Delhi, Mumbai, Hyderabad, Bangalore",2545,21.48,14.51,0.5155,19.24,80.76
+Hyderabad,"Delhi, Mumbai, Chennai, Bangalore",2550,14.64,10.92,0.8145,14.61,85.39
+Bangalore,"Delhi, Mumbai, Chennai, Hyderabad",2550,15.33,11.37,0.6462,16.56,83.44
+Mean (Cross-City Transfer),4-Metro Leave-One-Out,12012,20.77,15.3,0.7054,16.13,83.87

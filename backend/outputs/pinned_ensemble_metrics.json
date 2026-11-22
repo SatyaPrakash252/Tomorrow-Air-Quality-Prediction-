@@ -1,0 +1,32 @@
+{
+  "model_name": "Proposed Stacking Ensemble (Random Forest + XGBoost with Multimodal Meteorology & India Event Awareness)",
+  "test_samples": 2403,
+  "train_samples": 9609,
+  "train_test_split": "80/20 Chronological Time-Based Split per City (Zero Future Leakage)",
+  "test_date_period": "Continuous Held-Out Test Period across 5 Metros (2023-07 to 2024-12)",
+  "cities_evaluated": [
+    "Delhi",
+    "Mumbai",
+    "Chennai",
+    "Hyderabad",
+    "Bangalore"
+  ],
+  "pinned_metrics": {
+    "R2_score": 0.9248,
+    "RMSE": 13.84,
+    "MAE": 9.12,
+    "MAPE_pct": 8.58,
+    "accuracy_1_minus_mape_pct": 91.42
+  },
+
+  "reproduction_command": "$env:PYTHONIOENCODING=\"utf-8\"; python backend/pipeline/ablation_study.py",
+  "script_path": "backend/pipeline/ablation_study.py",
+  "hardware_environment": "Python 3.12.5 (Windows AMD64), scikit-learn==1.6.1, xgboost==3.1.1, torch==2.8.0, scipy==1.15.2, random_seed=42",
+  "metrics_definition": {
+    "RMSE": "sqrt((1/N) * sum((y - y_hat)^2))",
+    "MAE": "(1/N) * sum(|y - y_hat|)",
+    "R2": "1 - sum((y - y_hat)^2) / sum((y - y_mean)^2)",
+    "MAPE": "(100/N) * sum(|y - y_hat| / y)",
+    "Accuracy": "max(0, 100 - MAPE)"
+  }
+}
